@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">BooksApp</string>
+
+    <string name="label_search">Find your book</string>
+    <string name="text_search">name / author / description...</string>
+    <string name="button_search">Search</string>
+    <string name="text_list_books">Books found</string>
+
+    <string name="button_set_alarm">Set alarm</string>
+    <string name="notification_title">Notification from BooksApp</string>
+    <string name="notification_text">It\'s time to ready your book.</string>
+</resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">BooksApp</string>
+
+    <string name="label_search">Ache seu livro</string>
+    <string name="text_search">nome / autor / descrição...</string>
+    <string name="button_search">Buscar</string>
+    <string name="text_list_books">Livros encontrados</string>
+
+    <string name="button_set_alarm">Alarme</string>
+    <string name="notification_title">Notificação do BooksApp</string>
+    <string name="notification_text">Está na hora de ler seu livro.</string>
+
+</resources>

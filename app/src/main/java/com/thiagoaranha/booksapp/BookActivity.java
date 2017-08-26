@@ -1,22 +1,16 @@
 package com.thiagoaranha.booksapp;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcel;
-import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.squareup.picasso.Picasso;
+import com.thiagoaranha.booksapp.model.Book;
+import com.thiagoaranha.booksapp.model.ImageLinks;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -80,18 +74,22 @@ public class BookActivity extends AppCompatActivity {
                         JSONObject volumeInfo = object.getJSONObject("volumeInfo");
 
                         String title = volumeInfo.getString("title");
-                        book.setTitle(title);
+                        book.getVolumeInfo().setTitle(title);
 
-                        JSONArray authors = volumeInfo.getJSONArray("authors");
-                        String author = authors.getString(0);
-                        book.setAuthor(author);
+                        JSONArray authorsJson = volumeInfo.getJSONArray("authors");
+                        String[] authors = new String[authorsJson.length()];
+                        for(int i = 0; i < authorsJson.length(); i++){
+                            authors[i] = authorsJson.getString(i);
+                        }
+                        book.getVolumeInfo().setAuthors(authors);
 
                         JSONObject imageLinks = volumeInfo.getJSONObject("imageLinks");
-                        String imageLink = imageLinks.getString("smallThumbnail");
-                        book.setImage_url(imageLink);
+                        String smallThumbnail = imageLinks.getString("smallThumbnail");
+                        ImageLinks imgLinks = new ImageLinks(smallThumbnail);
+                        book.getVolumeInfo().setImageLinks(imgLinks);
 
                         String description = volumeInfo.getString("description");
-                        book.setDescription(description);
+                        book.getVolumeInfo().setDescription(description);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -146,4 +144,5 @@ public class BookActivity extends AppCompatActivity {
         }
 
     }
+
 }

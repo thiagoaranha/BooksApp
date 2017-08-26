@@ -23,6 +23,14 @@
         android:layout_below="@+id/cover"
         android:textSize="9dp"></Button>
 
+    <Button
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnFavorite"
+        android:text="@string/button_set_favorite"
+        android:layout_below="@+id/btnSetAlarm"
+        android:textSize="9dp"></Button>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

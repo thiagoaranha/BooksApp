@@ -1,6 +1,7 @@
 package com.thiagoaranha.booksapp;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -32,7 +33,7 @@ public class SearchFragment extends Fragment {
                 onSubmitSearchListener.onSubmitSearch(searchText.getText().toString());
             }
         });
-
+        
         return root;
     }
 
@@ -50,6 +51,9 @@ public class SearchFragment extends Fragment {
 
     public interface OnSubmitSearchListener{
         public void onSubmitSearch(String text);
+
     }
+
+
 
 }

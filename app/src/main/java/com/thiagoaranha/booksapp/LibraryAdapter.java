@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.thiagoaranha.booksapp.model.Book;
 
 import java.util.List;
 
@@ -47,13 +48,13 @@ public class LibraryAdapter extends BaseAdapter {
         Book book = (Book) getItem(i);
 
         TextView tvTitle = (TextView) view.findViewById(R.id.title);
-        tvTitle.setText(book.getTitle());
+        tvTitle.setText(book.getVolumeInfo().getTitle());
 
         TextView tvAuthor = (TextView) view.findViewById(R.id.author);
-        tvAuthor.setText(book.getAuthor());
+        tvAuthor.setText(book.getVolumeInfo().getAuthors()[0]);
 
         ImageView ivCover = (ImageView) view.findViewById(R.id.cover);
-        Picasso.with(context).load(book.getImage_url()).into(ivCover);
+        Picasso.with(context).load(book.getVolumeInfo().getImageLinks().getSmallThumbnail()).into(ivCover);
 
         return view;
     }

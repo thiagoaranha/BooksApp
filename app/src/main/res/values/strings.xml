@@ -7,6 +7,9 @@
     <string name="text_list_books">Books found</string>
 
     <string name="button_set_alarm">Set alarm</string>
+    <string name="button_set_favorite">Favorite</string>
     <string name="notification_title">Notification from BooksApp</string>
     <string name="notification_text">It\'s time to ready your book.</string>
+    <string name="button_favoritos">Favorite</string>
+    <string name="btnDeleteFavorito">Delete all</string>
 </resources>

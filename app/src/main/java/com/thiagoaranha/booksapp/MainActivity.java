@@ -1,24 +1,19 @@
 package com.thiagoaranha.booksapp;
 
-import android.app.Fragment;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.*;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.thiagoaranha.booksapp.HttpRequest.ParamRequest;
+import com.thiagoaranha.booksapp.HttpRequest.RetrofitGetBooks;
+import com.thiagoaranha.booksapp.model.Book;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,7 +24,7 @@ import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
-public class MainActivity extends AppCompatActivity implements SearchFragment.OnSubmitSearchListener, LibraryFragment.OnListItemClickListener {
+public class MainActivity extends AppCompatActivity implements SearchFragment.OnSubmitSearchListener, LibraryFragment.OnListItemClickListener, RetrofitGetBooks.GetNewApiListener {
 
     SearchFragment searchFragment;
     FragmentManager fm;
@@ -80,10 +75,13 @@ public class MainActivity extends AppCompatActivity implements SearchFragment.On
         if(text.length()>0)
         {
             text = text.replace(" ", "+");
-            String url = "https://www.googleapis.com/books/v1/volumes?q=";
-            url = url + text;
 
-            AsyncHttpClient client = new AsyncHttpClient();
+            RetrofitGetBooks task = new RetrofitGetBooks(this);
+            ParamRequest params = new ParamRequest();
+            params.q = text;
+            task.execute(params);
+
+            /*AsyncHttpClient client = new AsyncHttpClient();
             client.get(url, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -170,17 +168,26 @@ public class MainActivity extends AppCompatActivity implements SearchFragment.On
                     super.onProgress(bytesWritten, totalSize);
                 }
 
-            });
+            });*/
 
         }
 
     }
 
+    public void showFavorite(View view){
+        Intent intent = new Intent(getApplicationContext(), FavoritosActivity.class);
+        startActivity(intent);
+    }
 
     public void findBookById(String bookId) {
 
         if(bookId.length()>0)
         {
+            RetrofitGetBooks task = new RetrofitGetBooks(this);
+            ParamRequest params = new ParamRequest();
+            params.id = bookId;
+            task.execute(params);
+
             bookId = bookId.replace(" ", "+");
             String url = "https://www.googleapis.com/books/v1/volumes/";
             url = url + bookId;
@@ -203,18 +210,18 @@ public class MainActivity extends AppCompatActivity implements SearchFragment.On
                         JSONObject volumeInfo = object.getJSONObject("volumeInfo");
 
                         String title = volumeInfo.getString("title");
-                        book.setTitle(title);
+                        //book.setTitle(title);
 
                         JSONArray authors = volumeInfo.getJSONArray("authors");
                         String author = authors.getString(0);
-                        book.setAuthor(author);
+                        //book.setAuthor(author);
 
                         JSONObject imageLinks = volumeInfo.getJSONObject("imageLinks");
                         String imageLink = imageLinks.getString("smallThumbnail");
-                        book.setImage_url(imageLink);
+                        //book.setImage_url(imageLink);
 
                         String description = volumeInfo.getString("description");
-                        book.setDescription(description);
+                        //book.setDescription(description);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -280,5 +287,26 @@ public class MainActivity extends AppCompatActivity implements SearchFragment.On
         fm.beginTransaction().addToBackStack(null).replace(R.id.main_container, bookFragment).commit();
     }
 
+
+    @Override
+    public void onApiResult(List<Book> books) {
+
+        Bundle args = new Bundle();
+        args.putParcelableArrayList("bookList", (ArrayList<? extends Parcelable>) books);
+
+        LibraryFragment libraryFragment = new LibraryFragment();
+
+        libraryFragment.setArguments(args);
+
+        android.support.v4.app.Fragment fragmentLoaded = fm.findFragmentById(R.id.main_container);
+        fm = getSupportFragmentManager();
+
+        if(fragmentLoaded != null) {
+            fm.beginTransaction().addToBackStack(null).replace(R.id.main_container, libraryFragment).commit();
+        }else{
+            fm.beginTransaction().addToBackStack(null).add(R.id.main_container, libraryFragment).commit();
+        }
+
+    }
 
 }

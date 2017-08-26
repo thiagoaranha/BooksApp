@@ -22,4 +22,11 @@
         android:id="@+id/btn_search"
         android:text="@string/button_search"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_height"
+        android:id="@+id/btn_favoritos"
+        android:text="@string/button_favoritos"
+        android:onClick="showFavorite"/>
+
 </LinearLayout>

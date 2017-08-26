@@ -9,7 +9,10 @@
     <string name="text_list_books">Livros encontrados</string>
 
     <string name="button_set_alarm">Alarme</string>
+    <string name="button_set_favorite">Favoritos</string>
     <string name="notification_title">Notificação do BooksApp</string>
     <string name="notification_text">Está na hora de ler seu livro.</string>
+    <string name="button_favoritos">Favoritos</string>
+    <string name="btnDeleteFavorito">Apagar favoritos</string>
 
 </resources>

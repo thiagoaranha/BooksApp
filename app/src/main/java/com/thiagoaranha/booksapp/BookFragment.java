@@ -4,12 +4,9 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.*;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +15,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.squareup.picasso.Picasso;
-import com.thiagoaranha.booksapp.R;
-
-import org.w3c.dom.Text;
+import com.thiagoaranha.booksapp.dao.BookDao;
+import com.thiagoaranha.booksapp.model.Book;
 
 import java.util.Calendar;
 
@@ -45,11 +41,11 @@ public class BookFragment extends Fragment {
 
         if(book != null){
             id = stripHtml(book.getId());
-            txtTitle.setText(stripHtml(book.getTitle()));
-            txtAuthor.setText(stripHtml(book.getAuthor()));
-            txtDescription.setText(stripHtml(book.getDescription()));
+            txtTitle.setText(stripHtml(book.getVolumeInfo().getTitle()));
+            txtAuthor.setText(stripHtml(book.getVolumeInfo().getAuthors()[0]));
+            txtDescription.setText(stripHtml(book.getVolumeInfo().getDescription()));
 
-            Picasso.with(getContext()).load(book.getImage_url()).into(imgCover);
+            Picasso.with(getContext()).load(book.getVolumeInfo().getImageLinks().getSmallThumbnail()).into(imgCover);
 
         }
 
@@ -57,6 +53,14 @@ public class BookFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 setAlarme(book.getId());
+            }
+        });
+
+        root.findViewById(R.id.btnFavorite).setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                BookDao bookDao = new BookDao(getContext());
+                bookDao.insert(book);
             }
         });
 
